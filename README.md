@@ -5,7 +5,7 @@ this project will be denoted smothing about learing Scrapy
 
 # Scrapy 使用了 Twisted异步网络库来处理网络通讯。整体架构大致如下
 
-
+![image]()
 
 # Scrapy主要包括了以下组件：
 
