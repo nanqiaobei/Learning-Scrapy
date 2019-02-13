@@ -1,0 +1,104 @@
+#在parse方法中直接处理。如果对于想要获取更多的数据处理，则可以利用Scrapy的items将数据格式化，然后统一交由pipelines来处理。
+#在spiders/xiahuar.py代码如下：
+import scrapy
+from scrapy.selector import HtmlXPathSelector
+from scrapy.http.request import Request
+from scrapy.http.cookies import CookieJar
+from scrapy import FormRequest
+
+
+class XiaoHuarSpider(scrapy.Spider):
+    # 爬虫应用的名称，通过此名称启动爬虫命令
+    name = "xiaohuar"
+    # 允许的域名
+    allowed_domains = ["xiaohuar.com"]
+
+    start_urls = [
+        "http://www.xiaohuar.com/list-1-1.html",
+    ]
+    # custom_settings = {
+    #     'ITEM_PIPELINES':{
+    #         'spider1.pipelines.JsonPipeline': 100
+    #     }
+    # }
+    has_request_set = {}
+
+    def parse(self, response):
+        # 分析页面
+        # 找到页面中符合规则的内容（校花图片），保存
+        # 找到所有的a标签，再访问其他a标签，一层一层的搞下去
+
+        hxs = HtmlXPathSelector(response)
+
+        items = hxs.select('//div[@class="item_list infinite_scroll"]/div')
+        for item in items:
+            src = item.select('.//div[@class="img"]/a/img/@src').extract_first()
+            name = item.select('.//div[@class="img"]/span/text()').extract_first()
+            school = item.select('.//div[@class="img"]/div[@class="btns"]/a/text()').extract_first()
+            url = "http://www.xiaohuar.com%s" % src
+            from ..items import XiaoHuarItem
+            obj = XiaoHuarItem(name=name, school=school, url=url)
+            yield obj
+
+        urls = hxs.select('//a[re:test(@href, "http://www.xiaohuar.com/list-1-\d+.html")]/@href')
+        for url in urls:
+            key = self.md5(url)
+            if key in self.has_request_set:
+                pass
+            else:
+                self.has_request_set[key] = url
+                req = Request(url=url,method='GET',callback=self.parse)
+                yield req
+
+    @staticmethod
+    def md5(val):
+        import hashlib
+        ha = hashlib.md5()
+        ha.update(bytes(val, encoding='utf-8'))
+        key = ha.hexdigest()
+        return key
+#############################################################################################################
+#在items.py代码如下：item是进行想要获取的数据格式定义的
+import scrapy
+
+class XiaoHuarItem(scrapy.Item):
+    name = scrapy.Field()
+    school = scrapy.Field()
+    url = scrapy.Field()
+####################################################
+#pipelines.py代码如下：
+import json
+import os
+import requests
+
+
+class JsonPipeline(object):
+    def __init__(self):
+        self.file = open('xiaohua.txt', 'w')
+
+    def process_item(self, item, spider):
+        v = json.dumps(dict(item), ensure_ascii=False)
+        self.file.write(v)
+        self.file.write('\n')
+        self.file.flush()
+        return item
+
+
+class FilePipeline(object):
+    def __init__(self):
+        if not os.path.exists('imgs'):
+            os.makedirs('imgs')
+
+    def process_item(self, item, spider):
+        response = requests.get(item['url'], stream=True)
+        file_name = '%s_%s.jpg' % (item['name'], item['school'])
+        with open(os.path.join('imgs', file_name), mode='wb') as f:
+            f.write(response.content)
+        return item
+ #####################################################################################################
+ #在setting.py下的代码如下：#setting是进行信息配置的
+ ITEM_PIPELINES = {
+   'spider1.pipelines.JsonPipeline': 100,
+   'spider1.pipelines.FilePipeline': 300,
+}
+# 每行后面的整型值，确定了他们运行的顺序，item按数字从低到高的顺序，通过pipeline，通常将这些数字定义在0-1000范围内。
