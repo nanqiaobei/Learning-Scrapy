@@ -46,14 +46,14 @@
 4. scrapy crawl 爬虫应用名称
    - 运行单独爬虫应用
 # 3.项目结构以及爬虫应用简介
- project_name/   <br>
+ >project_name/   <br>
     scrapy.cfg   <br>
-    project_name/ <br>
+    >project_name/ <br>
        __init__.py<br>
        items.py<br>
        pipelines.py<br>
        settings.py<br>
-       spiders/<br>
+       >spiders/<br>
            __init__.py<br>
            爬虫1.py<br>
            爬虫2.py<br>
