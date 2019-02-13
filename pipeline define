@@ -1,0 +1,42 @@
+
+from scrapy.exceptions import DropItem
+
+class CustomPipeline(object):
+    def __init__(self,v):
+        self.value = v
+
+    def process_item(self, item, spider):
+        # 操作并进行持久化
+
+        # return表示会被后续的pipeline继续处理
+        return item
+
+        # 表示将item丢弃，不会被后续pipeline处理
+        # raise DropItem()
+
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        """
+        初始化时候，用于创建pipeline对象
+        :param crawler: 
+        :return: 
+        """
+        val = crawler.settings.getint('MMMM')
+        return cls(val)
+
+    def open_spider(self,spider):
+        """
+        爬虫开始执行时，调用
+        :param spider: 
+        :return: 
+        """
+        print('000000')
+
+    def close_spider(self,spider):
+        """
+        爬虫关闭时，被调用
+        :param spider: 
+        :return: 
+        """
+        print('111111')
