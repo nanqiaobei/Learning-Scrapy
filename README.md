@@ -48,16 +48,16 @@
 # 3.项目结构以及爬虫应用简介
  >project_name/   <br>
     scrapy.cfg   <br>
-    >project_name/ <br>
-       __init__.py<br>
-       items.py<br>
-       pipelines.py<br>
-       settings.py<br>
-       >spiders/<br>
-           __init__.py<br>
-           爬虫1.py<br>
-           爬虫2.py<br>
-           爬虫3.py<br>
+    project_name/ <br>
+      >> __init__.py<br>
+       >>items.py<br>
+       >>pipelines.py<br>
+       >>settings.py<br>
+       >>spiders/<br>
+          >>> __init__.py<br>
+           >>>爬虫1.py<br>
+           >>>爬虫2.py<br>
+           >>>爬虫3.py<br>
 文件说明：
 scrapy.cfg  项目的主配置信息。（真正爬虫相关的配置信息在settings.py文件中）<br>
 items.py    设置数据存储模板，用于结构化数据，如：Django的Model<br>
