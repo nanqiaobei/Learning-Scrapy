@@ -32,3 +32,4 @@ class ChoutiSpider(scrapy.Spider):
     def check_login(self, response):
         print(response.text)
         
+#注意这边还需要在setting.py中进行配置，在settings.py中设置DEPTH_LIMIT = 1来指定“递归”的层数
