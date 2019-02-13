@@ -40,4 +40,5 @@ class DigSpider(scrapy.Spider):
         key = ha.hexdigest()
         return key
  #执行此爬虫文件，则在终端进入项目目录执行如下命令：scrapy crawl dig --nolog
+ #Request是一个封装用户请求的类，在回调函数中yield该对象表示继续访问
 
