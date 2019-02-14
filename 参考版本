@@ -1,0 +1,130 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+import types
+from twisted.internet import defer
+from twisted.web.client import getPage
+from twisted.internet import reactor
+
+
+
+class Request(object):
+    def __init__(self, url, callback):
+        self.url = url
+        self.callback = callback
+        self.priority = 0
+
+
+class HttpResponse(object):
+    def __init__(self, content, request):
+        self.content = content
+        self.request = request
+
+
+class ChouTiSpider(object):
+
+    def start_requests(self):
+        url_list = ['http://www.cnblogs.com/', 'http://www.bing.com']
+        for url in url_list:
+            yield Request(url=url, callback=self.parse)
+
+    def parse(self, response):
+        print(response.request.url)
+        # yield Request(url="http://www.baidu.com", callback=self.parse)
+
+
+
+
+from queue import Queue
+Q = Queue()
+
+
+class CallLaterOnce(object):
+    def __init__(self, func, *a, **kw):
+        self._func = func
+        self._a = a
+        self._kw = kw
+        self._call = None
+
+    def schedule(self, delay=0):
+        if self._call is None:
+            self._call = reactor.callLater(delay, self)
+
+    def cancel(self):
+        if self._call:
+            self._call.cancel()
+
+    def __call__(self):
+        self._call = None
+        return self._func(*self._a, **self._kw)
+
+
+class Engine(object):
+    def __init__(self):
+        self.nextcall = None
+        self.crawlling = []
+        self.max = 5
+        self._closewait = None
+
+    def get_response(self,content, request):
+        response = HttpResponse(content, request)
+        gen = request.callback(response)
+        if isinstance(gen, types.GeneratorType):
+            for req in gen:
+                req.priority = request.priority + 1
+                Q.put(req)
+
+
+    def rm_crawlling(self,response,d):
+        self.crawlling.remove(d)
+
+    def _next_request(self,spider):
+        if Q.qsize() == 0 and len(self.crawlling) == 0:
+            self._closewait.callback(None)
+
+        if len(self.crawlling) >= 5:
+            return
+        while len(self.crawlling) < 5:
+            try:
+                req = Q.get(block=False)
+            except Exception as e:
+                req = None
+            if not req:
+                return
+            d = getPage(req.url.encode('utf-8'))
+            self.crawlling.append(d)
+            d.addCallback(self.get_response, req)
+            d.addCallback(self.rm_crawlling,d)
+            d.addCallback(lambda _: self.nextcall.schedule())
+
+
+    @defer.inlineCallbacks
+    def crawl(self):
+        spider = ChouTiSpider()
+        start_requests = iter(spider.start_requests())
+        flag = True
+        while flag:
+            try:
+                req = next(start_requests)
+                Q.put(req)
+            except StopIteration as e:
+                flag = False
+
+        self.nextcall = CallLaterOnce(self._next_request,spider)
+        self.nextcall.schedule()
+
+        self._closewait = defer.Deferred()
+        yield self._closewait
+
+    @defer.inlineCallbacks
+    def pp(self):
+        yield self.crawl()
+
+_active = set()
+obj = Engine()
+d = obj.crawl()
+_active.add(d)
+
+li = defer.DeferredList(_active)
+li.addBoth(lambda _,*a,**kw: reactor.stop())
+
+reactor.run()
