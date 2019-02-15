@@ -67,7 +67,8 @@ spiders      爬虫目录，如：创建文件，编写爬虫规则<br>
 注意：一般创建爬虫文件时，以网站域名命名<br>
 # 破解滑动验证码的方法
  一些网站加入了滑动验证码，最典型的要属于极验滑动认证了，极验官网：http://www.geetest.com/，下图是极验的登录界面<br>
-![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img02.png)
+![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img02.png)<br>
+ 
 我们可以用selenium驱动浏览器来解决这个问题，大致分为以下几个步骤<br>
   步骤一:点击按钮，弹出没有缺口的图片<br>
   步骤二：获取步骤一的图片<br>
