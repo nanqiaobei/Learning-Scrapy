@@ -1,0 +1,48 @@
+import scrapy
+import sys
+import io
+from scrapy.selector import Selector,HtmlXPathSelector
+from scrapy.http import Request
+
+
+class CnblogSpider(scrapy.Spider):
+    name = 'cnblog'
+    allowed_domains = ['cnblogs.com']
+    start_urls = ['http://www.cnblogs.com/']
+
+#递归获取所有页面
+    visited_url=set()
+    def parse(self, response):
+        print(response.url)
+        #hxs=Selector(response=response).xpath("//div[@id='post_list']/div[@class='post_item']/div[@class='post_item_body']/h3")
+        #print(hxs)
+        hxs=Selector(response=response).xpath("//div[@id='paging_block']/div[@class='pager']")
+        #hxs=Selector(response=response).xpath("//div[@id='paging_block']/div[@class='pager']/a")#注意这两种写法的不一样
+        for i in hxs:
+            #print(i)
+            #b=i.xpath("./a[@class='titlelnk']/text()").extract()
+            #print(b)
+            b=i.xpath("./a/@href").extract()
+            # b=i.xpath("./@href").extract()
+            for url in b :
+                md5_url=self.md5(url)
+                if md5_url in self.visited_url:
+                    #print("此url已经存在",url)
+                    pass
+                else:
+                    print(url)
+                    self.visited_url.add(md5_url)
+                    #print(url)
+                    #进行url的拼接
+                    url="http://www.cnblogs.com/%s"%url
+                    yield Request(url=url,callback=self.parse)  #自动将新要访问到的url放到调度器中
+                    #可以在setting.py中设置访问的深度DEEP_LIMIT(深度限制的英文)
+                #print(url)
+
+
+#md5方法对url进行加密然后便于比较
+    def md5(self,url):
+        import hashlib
+        obj=hashlib.md5()
+        obj.update(bytes(url,encoding='utf-8'))
+        return obj.hexdigest()
