@@ -22,7 +22,7 @@ class CustomPipeline(object):
         :param crawler: 
         :return: 
         """
-        val = crawler.settings.getint('MMMM')
+        val = crawler.settings.get('DB')  #注意这里的settings代指的就是py文件，便是去settings.py拿DB（如果settings没有就自己创建一个DB）
         return cls(val)
 
     def open_spider(self,spider):
