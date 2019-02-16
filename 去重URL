@@ -2,7 +2,7 @@
 #DUPEFILTER_CLASS = 'scrapy.dupefilter.RFPDupeFilter'
 #DUPEFILTER_DEBUG = False
 #JOBDIR = "保存范文记录的日志路径，如：/root/"  # 最终路径为 /root/requests.seen
-
+#这个需要在跟item.py,settings.py同一个目录下创建如depulication.py
 class RepeatUrl:
     def __init__(self):
         self.visited_url = set()
@@ -14,7 +14,7 @@ class RepeatUrl:
         :param settings: 
         :return: 
         """
-        return cls()
+        return cls()    #这个操着用的很经典，可以学起来拿来用
 
     def request_seen(self, request):
         """
