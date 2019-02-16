@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+
+# Define your item pipelines here
+#
+# Don't forget to add your pipeline to the ITEM_PIPELINES setting
+# See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from scrapy.exceptions import DropItem  #这个必须写死了,抛出异常
+#需要用到这里必须到setting.py中去配置ITEM_PIPELINES,将它激活工作
+#这边可以定义3个，一个写的数据库，一个写到缓存（文件格式），一个屏幕输出
+class StartcnblogPipeline(object):
+    def __init__(self, v):
+        self.value = v
+        
+    @classmethod
+    def from_crawler(cls, crawler):
+        """
+        初始化时候，用于创建pipeline对象
+        :param crawler:
+        :return:
+        """
+        val = crawler.settings.get('DB')  # 注意这里的settings代指的就是py文件，便是去settings.py拿DB（如果settings没有就自己创建一个DB）
+        return cls(val)
+    #下面是除了process_item的另外两个方法
+    def open_spider(self, spider):
+        """
+        爬虫开始执行时，调用
+        :param spider:
+        :return:
+        """
+        print('000000')
+
+    def close_spider(self, spider):
+        """
+        爬虫关闭时，被调用
+        :param spider:
+        :return:
+        """
+        print('111111')
+    #每当数据进行持久化时候，就会被调用
+    def process_item(self, item, spider):
+        #if spider.name=="cnblog"可以通过这种方法让特定的爬虫做什么样子的的事情
+        #在这里面定义写进数据库和写进文件操作进行持久化处理
+        tpl="%s/n%s/n/n",%(item["title"],item["href"])
+        f=open("news.json","a+",encoding="utf-8")
+        f.write(tpl)
+        f.close()
+        #return item
+
+    def process_item(self, item, spider):
+        # 在这里面定义写进数据库和写进文件操作进行持久化处理
+        tpl = "%s/n%s/n/n", % (item["title"], item["href"])  #写json数据的一种拼接方式，学会
+        f = open("news.json", "a+", encoding="utf-8")
+        f.write(tpl)
+        f.close()
+        # return item
+
+
+    def process_item(self, item, spider):
+        # 在这里面定义写进数据库和写进文件操作进行持久化处理
+        tpl = "%s/n%s/n/n", % (item["title"], item["href"])  #写json数据的一种拼接方式，学会
+        f = open("news.json", "a+", encoding="utf-8")
+        f.write(tpl)
+        f.close()
+       # return item  #这边必须写一个return item这样才会交给下一个,
+        raise DropItem() #这样表示把它丢弃掉，不给下一个
+
+
+
+class StartcnblogPipeline2(object):  #有了这第2个去setting.py中进行配置
+    #下面是除了process_item的另外两个方法
+    def open_spider(self, spider):
+        """
+        爬虫开始执行时，调用
+        :param spider:
+        :return:
+        """
+        print('000000')
+
+    def close_spider(self, spider):
+        """
+        爬虫关闭时，被调用
+        :param spider:
+        :return:
+        """
+        print('111111')
+    #每当数据进行持久化时候，就会被调用
+    def process_item(self, item, spider):
+        #if spider.name=="cnblog"可以通过这种方法让特定的爬虫做什么样子的的事情
+        #在这里面定义写进数据库和写进文件操作进行持久化处理
+        tpl="%s/n%s/n/n",%(item["title"],item["href"])
+        f=open("news.json","a+",encoding="utf-8")
+        f.write(tpl)
+        f.close()
+        #return item
+
+    def process_item(self, item, spider):
+        # 在这里面定义写进数据库和写进文件操作进行持久化处理
+        tpl = "%s/n%s/n/n", % (item["title"], item["href"])  #写json数据的一种拼接方式，学会
+        f = open("news.json", "a+", encoding="utf-8")
+        f.write(tpl)
+        f.close()
+        # return item
+
+
+    def process_item(self, item, spider):
+        # 在这里面定义写进数据库和写进文件操作进行持久化处理
+        tpl = "%s/n%s/n/n", % (item["title"], item["href"])  #写json数据的一种拼接方式，学会
+        f = open("news.json", "a+", encoding="utf-8")
+        f.write(tpl)
+        f.close()
+        # return item
