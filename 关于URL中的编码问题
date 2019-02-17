@@ -1,0 +1,19 @@
+from urllib import urlencode
+url="http"
+data={
+    "a":"1",
+    "b":"3"
+}
+url=url+urlencode(data)  #注意urlencode只能对字典形式的进行编码
+
+######################
+#quote只对一个字符串进行编码
+from urllib import quote
+a=quote("思念")
+url=urk+a  
+
+
+################################
+#对于解码使用urllib中的unquote()函数。没有urldecode()
+from urllib import unquote
+print(unquote("一串神秘代码"))
