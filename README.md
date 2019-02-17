@@ -79,4 +79,4 @@ spiders      爬虫目录，如：创建文件，编写爬虫规则<br>
   步骤七：按照轨迹拖动，完全验证<br>
   步骤八：完成登录<br>
  # 爬虫技术与反爬虫技术直接的关系
-![image]()
+![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img03.png)
