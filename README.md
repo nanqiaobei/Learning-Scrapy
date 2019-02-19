@@ -79,4 +79,6 @@ spiders      爬虫目录，如：创建文件，编写爬虫规则<br>
   步骤七：按照轨迹拖动，完全验证<br>
   步骤八：完成登录<br>
  # 爬虫技术与反爬虫技术直接的关系
-![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img03.png)
+![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img03.png)<br>
+# 爬虫验证码破解之输进式验证码
+解决思路：这种是最简单的一种，只要识别出里面的内容，然后填入到输入框中即可。这种识别技术叫OCR，这里我们推荐使用Python的第三方库，tesserocr。对于没有什么背影影响的验证码如图2，直接通过这个库来识别就可以。但是对于有嘈杂的背景的验证码这种，直接识别识别率会很低，遇到这种我们就得需要先处理一下图片，先对图片进行灰度化，然后再进行二值化，再去识别，这样识别率会大大提高。
