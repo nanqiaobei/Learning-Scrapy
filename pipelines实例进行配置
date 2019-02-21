@@ -87,7 +87,7 @@ class StartcnblogPipeline2(object):  #有了这第2个去setting.py中进行配�
     def process_item(self, item, spider):
         #if spider.name=="cnblog"可以通过这种方法让特定的爬虫做什么样子的的事情
         #在这里面定义写进数据库和写进文件操作进行持久化处理
-        tpl="%s/n%s/n/n",%(item["title"],item["href"])
+        tpl="%s/n%s/n/n",%(item["title"],item["href"])   #这步进行字符串拼接，也是要学会的
         f=open("news.json","a+",encoding="utf-8")
         f.write(tpl)
         f.close()
