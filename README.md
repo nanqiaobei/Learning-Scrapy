@@ -85,5 +85,5 @@ spiders      爬虫目录，如：创建文件，编写爬虫规则<br>
 # 关于cnblog的说明
 上面部分详细介绍了scrapy的工作流程，以及如何创建一个爬虫和运行一个爬虫
 cnblog是基于爬虫框架scray爬取cnblog一些帖子的相关信息，爬取了每个帖子的作者，标题，以及URL连接，使用json格式存放的<br>
-![image](https://github.com/nanqiaobei/Learning-Scrapy/blob/raw/image/img04.png)<br>
-![image](https://github.com/nanqiaobei/Learning-Scrapy/blob/raw/image/img05.png)
+![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img04.png)<br>
+![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img05.png)<br>
