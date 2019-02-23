@@ -88,3 +88,7 @@ cnblog是基于爬虫框架scray爬取cnblog一些帖子的相关信息，爬取
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img04.png)<br>
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img05.png)<br>
 代码中又用到自定义的去重url方法拿到没一页的url进行递归获取，设置了递归深度，可以自己设置递归深度，拿到多少页的信息
+## 下面为cnblog的一些运行结果的截图
+![image]()<br>
+![image]()<br>
+![image]()<br>
