@@ -84,7 +84,7 @@ spiders      爬虫目录，如：创建文件，编写爬虫规则<br>
 解决思路：这种是最简单的一种，只要识别出里面的内容，然后填入到输入框中即可。这种识别技术叫OCR，这里我们推荐使用Python的第三方库，tesserocr。对于没有什么背影影响的验证码如图2，直接通过这个库来识别就可以。但是对于有嘈杂的背景的验证码这种，直接识别识别率会很低，遇到这种我们就得需要先处理一下图片，先对图片进行灰度化，然后再进行二值化，再去识别，这样识别率会大大提高。
 # 关于cnblog的说明
 上面部分详细介绍了scrapy的工作流程，以及如何创建一个爬虫和运行一个爬虫
-cnblog是基于爬虫框架scray爬取cnblog一些帖子的相关信息，爬取了每个帖子的作者，标题，以及URL连接，使用json格式存放的<br>
+cnblog是基于爬虫框架scray爬取cnblog一些帖子的相关信息，爬取了每个帖子的作者，标题，以及URL连接，使用json格式存放的,在setting.py设置深度，自己只爬取了几页，可以设置加大深度多爬取<br>
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img04.png)<br>
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img05.png)<br>
 代码中又用到自定义的去重url方法拿到没一页的url进行递归获取，设置了递归深度，可以自己设置递归深度，拿到多少页的信息
