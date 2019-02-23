@@ -93,4 +93,4 @@ cnblog是基于爬虫框架scray爬取cnblog一些帖子的相关信息，爬取
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img07.png)<br>
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img08.png)<br>
 ![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img09.png)<br>
-![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img10.png)
+![image](https://github.com/nanqiaobei/Learning-Scrapy/raw/master/image/img10.png)<br>
